@@ -2,4 +2,4 @@ login = '/login'
 logout = '/logout'
 dashboard = '/dashboard'
 static = '/static/<filename:path>'
-models = '/data/<:re>/<:re>
+models = '/data/<model_name:re:[a-z0-9-_]+>/<action:re:(list|create|edit|update|delete)>'
