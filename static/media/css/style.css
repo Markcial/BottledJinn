@@ -79,6 +79,13 @@ body.login fieldset form p.input-container input {
 	margin-bottom:-25px;
 	
 }
+
+nav#fields {
+	border:1px solid red;
+	width:300px;
+	float:right;
+	height:100%;
+}
 body > footer {
 	height:25px;
 	padding:0px 10px;

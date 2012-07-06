@@ -21,6 +21,12 @@ class cookie:
 	secure = 'off'
 	httponly = 'off'
 
+#class session:
+#	type = 'file'
+#	cookie_expires = 300
+#	data_dir = './data'
+#	auto = True
+
 # nonce key for the user operations
 nonce_key = 'bottle-djinn'
 
@@ -34,4 +40,5 @@ class view_paths:
 	base = paths.auth_prefix
 	static = base + 'static'
 	css = static + '/media/css'
-	js = static + '/media/css'
+	js = static + '/media/js'
+	img = static + '/media/img'

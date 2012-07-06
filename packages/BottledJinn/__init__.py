@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-from bottle import Bottle, debug, request, response, redirect, static_file
+from bottle import Bottle, debug, request, response, abort, redirect, static_file
+from bottle.ext.redis import RedisPlugin
 from BottledJinn.settings import *
 from BottledJinn.utils import *
 from BottledJinn.session import Session
 from BottledJinn.auth import AuthPlugin, authenticate
 from jinja2 import Environment, FileSystemLoader
+
 
 class Jinn(Bottle):
 	def __init__(self, catchall=True, autojson=True):
@@ -16,6 +18,7 @@ class Jinn(Bottle):
 			return tpl.render(**ctx)
 		self.mount( paths.auth_prefix ,self )
 		self.install(AuthPlugin())
+		self.install(RedisPlugin( host = 'localhost' ))
 		self.jinja2_env = Environment(loader=FileSystemLoader(paths.templates), cache_size=0)
 		@self.hook('before_request')
 		def before_request():
@@ -44,50 +47,18 @@ class Jinn(Bottle):
 		@self.get( urls.static, skip=[AuthPlugin] )
 		def serve_static( filename ):
 			return static_file(filename, root=paths.static )
+		@self.get( urls.models_list )
+		def process_data(model_name):
+			return model_name
+		@self.get( urls.models_create )
+		def model_new(model_name):
+			return template( "admin/model_new.tpl" )
+		@self.get( urls.component )
+		def component( name ):
+			if request.is_xhr is False:
+				abort(404)
+			else:
+				return template( "admin/components/%s.tpl" % name )
 
 if __name__ == '__main__':
 	pass
-
-#"""
-#from bottle import Bottle, mount, run, debug
-#from BottleDjinn.settings import *
-#from BottleDjinn.auth import *
-#from BottleDjinn.utils import *
-#from beaker.middleware import SessionMiddleware#
-#
-#app = Bottle()
-#mount( realm_prefix, app )
-#
-# basic login
-#@app.route( '/login', method= 'GET' )
-#def login():#
-#	return template( 'admin/login.tpl', login_url=app.get_url('/login') )
-#	
-#@app.route( '/login', method= 'POST' )
-#def login():
-#	# authenticate
-#	# if ok then dashboard
-#	name = request.forms.get('name')
-#	password = request.forms.get('password')
-#	nonce = request.forms.get('nonce')
-#	creds = True
-#	if creds is True:
-#		redirect( app.get_url( '/dashboard' ) )
-#	else:
-#		redirect( app.get_url( '/login' ) )
-#		
-#@app.route( '/dashboard' )
-#def dashboard():
-#	return template( 'admin/dashboard.tpl' )
-#
-#
-#session_opts = {
-#	'session.type': 'file',
-#	'session.cookie_expires': 300,
-#	'session.data_dir': './data',
-#	'session.auto': True
-#}
-#app = SessionMiddleware(app, session_opts)
-#debug( True )
-#run(app=app,reloader=True,host='localhost', port=8080)
-#"""
