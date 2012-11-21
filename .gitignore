@@ -4,3 +4,4 @@
 *.session
 .gitignore
 __init__.py
+.DS_Store
