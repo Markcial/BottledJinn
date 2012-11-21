@@ -20,20 +20,28 @@
         </div>
       </div>
     </div>
-	{% for model in models%}
-	{{model.name}}
-	{% endfor %}
-<div class="container-fluid" role="main">
-	<div class="row-fluid">
-		{%block container%}{%endblock%}
-	</div>
-	<hr />
-	{% block footer %}
-	<div id="footer">
-		<div class="container">
-			<p class="credit">&copy; Copyright 2012 <a href="http://bottled-jinn.github.com/">Bottled Jinn</a>.</p>
+	
+	<div class="container-fluid" role="main">
+		<div class="row-fluid">
+			{%block container%}
+			{% for model in models%}
+				<div class="model_definition">
+					<h3>{{model.name}}</h3>
+					<a href="{{url(urls.models_create,model_name=model.name)}}" title="edit {{model.name}}">{{model.name}}</a>
+					<div class="repr">
+						{{model.__json__()}}
+					</div>
+				</div>
+			{% endfor %}
+			{%endblock%}
 		</div>
+		<hr />
+		{% block footer %}
+		<div id="footer">
+			<div class="container">
+				<p class="credit">&copy; Copyright 2012 <a href="http://bottled-jinn.github.com/">Bottled Jinn</a>.</p>
+			</div>
+		</div>
+		{% endblock %}
 	</div>
-	{% endblock %}
-</div>
 {% endblock %}

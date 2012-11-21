@@ -33,6 +33,9 @@ class Model(object):
 
     __str__ = __repr__
 
+    def __form__(self):
+        form_tag = '<form action="%s" method="POST">%s</form>'
+
     def __json__(self):
         return json.dumps({
             "name": self.name,
@@ -41,10 +44,8 @@ class Model(object):
 
     @staticmethod
     def from_json(js):
-        print js
         jsob = json.loads(js)
-        print jsob
         fields = []
-        for jsf in jsob.fields:
-            fields.append(Field(jsf.name, jsf.type, jsf.label))
-        return Model(jsob.name, fields)
+        for jsf in jsob['fields']:
+            fields.append(Field(jsf['name'], jsf['type'], jsf['label']))
+        return Model(jsob['name'], fields)

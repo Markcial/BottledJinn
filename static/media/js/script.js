@@ -10,7 +10,7 @@ var Input = function(id, type){
 		var html = '<p>';
 		html += '<input type="text" name="label[]" value="Label..." class="discrete" />';
 		html += '<input type="text" id="'+this.id+'" name="name[]" value="Name" placeholder="Label..." />';
-		html += '<input type="hidden" name="type[]" value="text" />';
+		html += '<input type="hidden" name="type[]" value="'+this.type+'" />';
 		html += '</p>';
 		return html;
 	}

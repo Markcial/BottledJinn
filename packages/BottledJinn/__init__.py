@@ -60,11 +60,11 @@ class Jinn(Bottle):
 
         @self.get(urls.dashboard)
         def dashboard(rdb):
-            obj = rdb.get('models')
-            print obj.name
-            model = Model.from_json(js)
-            print model
-            models = [model]
+            models = []
+            obj = rdb.hgetall('models')
+            for itm in obj:
+                model = Model.from_json(obj[itm])
+                models.append(model)
             return template("admin/dashboard.tpl", models=models)
 
         @self.get(urls.static, skip=[AuthPlugin])
@@ -76,8 +76,14 @@ class Jinn(Bottle):
             return model_name
 
         @self.get(urls.models_create)
-        def model_new(model_name):
-            return template("admin/model_new.tpl", model_name=model_name)
+        def model_new(model_name, rdb):
+            jsmodel = rdb.hget('models', model_name)
+            model = Model.from_json(jsmodel)
+            return template(
+                    "admin/model_new.tpl",
+                    model_name=model_name,
+                    model=model
+            )
 
         @self.get(urls.models_design)
         def model_design(model_name):
@@ -93,7 +99,7 @@ class Jinn(Bottle):
                 field = Field(names[a], types[a], labels[a])
                 fields.append(field)
             model = Model(model_name, fields)
-            rdb.hset(model.name, 'models', model.__json__())
+            rdb.hset('models', model.name, model.__json__())
 
 
 if __name__ == '__main__':

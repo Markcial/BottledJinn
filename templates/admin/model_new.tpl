@@ -1,4 +1,5 @@
 {% extends "admin/dashboard.tpl" %}
+{% import 'macros/forms.tpl' as forms %}
 {% block title %}Bottled Jinn Dashboard{% endblock %}
 {% block body_classes%}{{super()}} model_edit{% endblock %}
 {% block container %}
@@ -10,7 +11,9 @@
 			<legend>Edit form</legend>
 			<form id="editable_form" class="editable well" action="{{post_action}}" method="POST">
 				<div id="form_content">
-				
+				{% for field in model.fields %}
+				{{forms.input(field.name, value='', type=field.type, placeholder=field.label, label=field.label, attrs={} )}}
+				{% endfor %}
 				</div>
 				<hr />
 				<button type="submit" class="btn btn-primary">Save changes</button>
