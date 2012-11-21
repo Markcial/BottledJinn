@@ -1,1 +1,6 @@
 *.pyc
+*.nja
+*.pk
+*.session
+.gitignore
+__init__.py
