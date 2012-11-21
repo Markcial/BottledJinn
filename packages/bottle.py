@@ -1254,7 +1254,7 @@ class BaseRequest(object):
             var = self.environ['bottle.request.ext.%s'%name]
             return var.__get__(self) if hasattr(var, '__get__') else var
         except KeyError:
-            raise AttributeError('Attribute %r not defined.' % name)       
+            raise AttributeError('Attribute %r not defined.' % name)
 
     def __setattr__(self, name, value):
         if name == 'environ': return object.__setattr__(self, name, value)
@@ -1971,7 +1971,7 @@ class ResourceManager(object):
 
             The `base` parameter makes it easy to reference files installed
             along with a python module or package::
-            
+
                 res.add_path('./resources/', __file__)
         '''
         base = os.path.abspath(os.path.dirname(base or self.base))
@@ -3194,7 +3194,7 @@ ERROR_PAGE_TEMPLATE = """
 %%end
 """ % __name__
 
-#: A thread-safe instance of :class:`LocalRequest`. If accessed from within a 
+#: A thread-safe instance of :class:`LocalRequest`. If accessed from within a
 #: request callback, this instance always refers to the *current* request
 #: (even on a multithreaded server).
 request = LocalRequest()

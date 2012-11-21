@@ -1,13 +1,21 @@
 #!/usr/bin/env python
 
-import sys, os
+import sys
+import os
 package_dir = "packages"
 package_dir_path = os.path.join(os.path.dirname(__file__), package_dir)
 sys.path.insert(0, package_dir_path)
 
-from BottledJinn import Jinn
-from bottle import debug
+from bottle import Bottle
+from BottledJinn import Jinn, paths
 
-jinn = Jinn()
-debug( True )
-jinn.run(reloader=True,host='localhost', port=8080)
+if __name__ == '__main__':
+    jinn = Jinn()
+    bottle = Bottle()
+    bottle.mount(paths.auth_prefix, jinn)
+    bottle.run(
+        reloader=True,
+        host='localhost',
+        port=8080,
+        debug=True
+    )

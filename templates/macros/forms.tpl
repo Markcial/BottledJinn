@@ -1,7 +1,7 @@
-{% macro input(name, value='', type='text', placeholder='Insert text here…', label=False ) -%}
+{% macro input(name, value='', type='text', placeholder='Insert text here…', label=False, attrs={} ) -%}
 	<p class="input-container">
 	{% if label %}<label for="{{name}}">{{label}}</label>{% endif %}
-	<input type="{{type}}" value="{{value|e}}" name="{{name}}" placeholder="{{placeholder}}" id="{{name}}" />
+	<input type="{{type}}" value="{{value|e}}" name="{{name}}" placeholder="{{placeholder}}" id="{{name}}" {%for (k,v) in attrs.iteritems()%}{{k}}="{{v}}"{%endfor%} />
 	</p>
 {%- endmacro %}
 
