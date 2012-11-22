@@ -85,22 +85,78 @@ class Jinn(Bottle):
                     model=model
             )
 
+        @self.post(urls.models_create)
+        def model_save(model_name, rdb):
+            jsmodel = rdb.hget('models', model_name)
+            model = Model.from_json(jsmodel)
+            for f in model.fields:
+                f.value = request.forms.get(f.name)
+            index = rdb.lpush(
+                "%s::%s" % ("models", model_name),
+                model.__json__()
+            )
+            redirect(
+                self.get_url(urls.models_edit, model_name=model_name, id=index)
+            )
+
+        @self.get(urls.models_list)
+        def models_list(model_name, rdb):
+            models = []
+            obj = rdb.hgetall('models')
+            for itm in obj:
+                model = Model.from_json(obj[itm])
+                models.append(model)
+            jsmodel = rdb.hget('models', model_name)
+            model = Model.from_json(jsmodel)
+            item_list = rdb.lrange("%s::%s" % ("models", model_name), 0, 10)
+            items = []
+            for a in item_list:
+                items.append(Model.from_json(a))
+            return template(
+                "admin/model_list.tpl",
+                model_name=model_name,
+                model=model,
+                models=models,
+                items=items
+            )
+
         @self.get(urls.models_design)
-        def model_design(model_name):
-            return template("admin/model_design.tpl", model_name=model_name)
+        def model_design():
+            return template("admin/model_design.tpl")
 
         @self.post(urls.models_design)
-        def model_design_save(model_name, rdb):
+        def model_design_save(rdb):
+            model_name = request.POST.get('model_name')
             types = request.POST.getall('type[]')
             labels = request.POST.getall('label[]')
             names = request.POST.getall('name[]')
+            ids = request.POST.getall('id[]')
+            orders = request.POST.getall('order[]')
+            values = request.POST.getall('values[]')
             fields = []
             for a in range(0, len(types)):
-                field = Field(names[a], types[a], labels[a])
+                field = Field(
+                    names[a],
+                    types[a],
+                    labels[a],
+                    ids[a],
+                    orders[a],
+                    values[a] if a in values else ''
+                )
                 fields.append(field)
             model = Model(model_name, fields)
             rdb.hset('models', model.name, model.__json__())
+            redirect(self.get_url(urls.models_list, model_name=model_name))
 
+        @self.get(urls.models_edit)
+        def model_edit(model_name, id, rdb):
+            jsmodel = rdb.lindex("%s::%s" % ("models", model_name), id - 1)
+            model = Model.from_json(jsmodel)
+            return template(
+                    "admin/model_new.tpl",
+                    model_name=model_name,
+                    model=model
+            )
 
 if __name__ == '__main__':
     pass

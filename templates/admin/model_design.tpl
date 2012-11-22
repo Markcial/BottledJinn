@@ -9,6 +9,10 @@
 		<fieldset>
 			<legend>Design {{model_name}} Object</legend>
 			<form id="editable_form" class="editable well" action="{{post_action}}" method="POST">
+				<p>
+					<label for="model_name">Model name</label>
+					<input type="text" name="model_name" id="model_name" placeholder="Model name" required />
+				</p>
 				<div id="form_content">
 				
 				</div>

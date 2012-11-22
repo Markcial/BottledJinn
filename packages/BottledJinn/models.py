@@ -7,10 +7,12 @@ except ImportError:
 
 class Field(object):
 
-    def __init__(self, name, type, label, value=False):
+    def __init__(self, name, type, label, id, order, value=False):
         self.name = name
         self.type = type
         self.label = label
+        self.id = id
+        self.order = order
         self.value = value
 
     def __repr__(self):
@@ -33,9 +35,6 @@ class Model(object):
 
     __str__ = __repr__
 
-    def __form__(self):
-        form_tag = '<form action="%s" method="POST">%s</form>'
-
     def __json__(self):
         return json.dumps({
             "name": self.name,
@@ -47,5 +46,14 @@ class Model(object):
         jsob = json.loads(js)
         fields = []
         for jsf in jsob['fields']:
-            fields.append(Field(jsf['name'], jsf['type'], jsf['label']))
+            fields.append(
+                Field(
+                    jsf['name'],
+                    jsf['type'],
+                    jsf['label'],
+                    jsf['id'],
+                    jsf['order'],
+                    jsf['value'] if 'value' in jsf else ''
+                )
+            )
         return Model(jsob['name'], fields)

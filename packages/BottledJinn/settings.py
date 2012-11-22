@@ -58,7 +58,7 @@ urls = AttrDict({
     "logout": '/logout',
     "dashboard": '/dashboard',
     "static": '/static/<filename:path>',
-    "models_design": '/data/<model_name:re:[a-z0-9-_]+>/design',
+    "models_design": '/data/design',
     "models_list": '/data/<model_name:re:[a-z0-9-_]+>/list',
     "models_create": '/data/<model_name:re:[a-z0-9-_]+>/new',
     "models_edit": '/data/<model_name:re:[a-z0-9-_]+>/edit/<id:int>',

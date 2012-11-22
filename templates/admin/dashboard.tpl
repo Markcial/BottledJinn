@@ -8,9 +8,9 @@
         <div class="container">
           <a class="brand" href="{{url(urls.dashboard)}}">Bottled Jinn Dashboard</a>
           <div class="nav-collapse collapse">
-            <ul class="nav">
+            {#<ul class="nav">
               <li><a href="{{url(urls.models_design,model_name="demo")}}">Nuevo</a></li>
-            </ul>
+            </ul>#}
           </div><!--/.nav-collapse -->
 		  <div class="nav-collapse collapse">
             <ul class="nav">
@@ -24,22 +24,27 @@
 	<div class="container-fluid" role="main">
 		<div class="row-fluid">
 			{%block container%}
-			{% for model in models%}
-				<div class="model_definition">
-					<h3>{{model.name}}</h3>
-					<a href="{{url(urls.models_create,model_name=model.name)}}" title="edit {{model.name}}">{{model.name}}</a>
-					<div class="repr">
-						{{model.__json__()}}
+			<div class="span3">
+				{% include "admin/quicknav.tpl" %}
+			</div><!--/span-->
+			<div class="span9">
+				{% for model in models%}
+					<div class="model_definition">
+						<h3>{{model.name}}</h3>
+						<a href="{{url(urls.models_create,model_name=model.name)}}" title="edit {{model.name}}">{{model.name}}</a>
+						<div class="repr">
+							{{model.__json__()}}
+						</div>
 					</div>
-				</div>
-			{% endfor %}
+				{% endfor %}
+			</div>
 			{%endblock%}
 		</div>
 		<hr />
 		{% block footer %}
 		<div id="footer">
 			<div class="container">
-				<p class="credit">&copy; Copyright 2012 <a href="http://bottled-jinn.github.com/">Bottled Jinn</a>.</p>
+				<p class="credit">&copy; Copyright 2012 <a href="http://markcial.github.com/BottledJinn/">Bottled Jinn</a>.</p>
 			</div>
 		</div>
 		{% endblock %}
