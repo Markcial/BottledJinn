@@ -2,7 +2,7 @@ Bottled Jinn
 ============
 
 Data manipulation framework built on top of [Bottle: Python Web Framework](http://bottlepy.org/docs/dev/) for the web environment
-[Twitter Bootstrap 2.0](http://twitter.github.com/bootstrap/) for the improved GUI and with [Redis](http:://redis.io) as the data 
+[Twitter Bootstrap 2.0](http://twitter.github.com/bootstrap/) for the improved GUI and with [Redis](http://redis.io) as the data 
 persitence daemon.
 
 Installation
